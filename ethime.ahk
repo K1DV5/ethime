@@ -1,4 +1,87 @@
-#Hotstring * C ?
+SendMode Input ; use SendInput by default
+
+; the following are for numbers
+accumNum := ""
+accumLen := 0
+
+nums1 := {1: Chr(0x1369)
+        , 2: Chr(0x136A)
+        , 3: Chr(0x136B)
+        , 4: Chr(0x136C)
+        , 5: Chr(0x136D)
+        , 6: Chr(0x136E)
+        , 7: Chr(0x136F)
+        , 8: Chr(0x1370)
+        , 9: Chr(0x1371)
+        , 0: ""}
+
+nums10 := {1: Chr(0x1372)
+         , 2: Chr(0x1373)
+         , 3: Chr(0x1374)
+         , 4: Chr(0x1375)
+         , 5: Chr(0x1376)
+         , 6: Chr(0x1377)
+         , 7: Chr(0x1378)
+         , 8: Chr(0x1379)
+         , 9: Chr(0x137A)
+         , 0: ""}
+
+num00 := Chr(0x137B)
+num0000 := Chr(0x137C)
+
+geezNum(n) {
+    global num00, nums1, nums10
+    numlen := StrLen(n)
+    if (Mod(numlen, 2) = 1) {
+        numlen := numlen + 1
+        n := "0" . n
+    }
+    ret := ""
+    Loop % numlen/2 {
+        c := SubStr(n, 1 - 2*A_index, 2) ; the last two digits
+        ret := num00 . nums10[SubStr(c, 1, 1)] . nums1[SubStr(c, 0)] . ret
+    }
+    ; clip the 00 and the first if it is 1
+    startPos := SubStr(ret, 2, 1) = nums1[1] and StrLen(ret) > 2 ? 3 : 2
+    return SubStr(ret, startPos)
+}
+
+writeNum(n) {
+    global accumNum, accumLen, nums1
+    if (nums1.HasKey(A_PriorKey)) { ; the previous key is a number
+        accumNum :=  accumNum . n
+        Send {Backspace %accumLen%}
+    } else {
+        accumNum := n
+    }
+    gNum := geezNum(accumNum)
+    accumLen := StrLen(gNum)
+    Send %gNum%
+}
+
+
+1::writeNum(1)
+2::writeNum(2)
+3::writeNum(3)
+4::writeNum(4)
+5::writeNum(5)
+6::writeNum(6)
+7::writeNum(7)
+8::writeNum(8)
+9::writeNum(9)
+0::writeNum(0)
+
+; some characters
+
+:::Send {U+1361}
+::::::{U+1362}
+,::Send {U+1363}
+::;::{U+1364}
+-::Send {U+1366}
+?::Send {U+1367}
+
+#SingleInstance force ; prevent multiple instances
+#Hotstring * C ? ; all hotstrings case sensitive
 
 h::
 if GetKeyState("Capslock", "T")=1
@@ -344,47 +427,6 @@ v::Send {U+1268}
 ::T.WA::{U+133F}
 ::FWA::{U+134F}
 ::PWA::{1357}
-
-:::Send {U+1361}
-::::::{U+1362}
-,::Send {U+1363}
-::;::{U+1364}
--::Send {U+1366}
-?::Send {U+1367}
-
-#Hotstring *0 O
-1::Send {U+1369}
-2::Send {U+136A}
-3::Send {U+136B}
-4::Send {U+136C}
-5::Send {U+136D}
-6::Send {U+136E}
-7::Send {U+136F}
-8::Send {U+1370}
-9::Send {U+1371}
-Numpad1::Send {U+1369}
-Numpad2::Send {U+136A}
-Numpad3::Send {U+136B}
-Numpad4::Send {U+136C}
-Numpad5::Send {U+136D}
-Numpad6::Send {U+136E}
-Numpad7::Send {U+136F}
-Numpad8::Send {U+1370}
-Numpad9::Send {U+1371}
-::10::{U+1372}
-::20::{U+1373}
-::30::{U+1374}
-::40::{U+1375}
-::50::{U+1376}
-::60::{U+1377}
-::70::{U+1378}
-::80::{U+1379}
-::90::{U+137A}
-::100::{U+137B}
-::00::{U+137B}
-::1000::{U+137C}
-::000::{U+137C}
-#Hotstring *
 
 ::/\::
 Suspend Permit
