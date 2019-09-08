@@ -1,3 +1,14 @@
+; The ethime project
+; This is a full input method for the Ethiopic script, written in AutoHotKey.
+; The way of writing is the same as Power Ge'ez
+; But the number writing system is fully compatible with normal number writing.
+;   for example, typing 345 will automatically produce ፫፻፵፭.
+
+; This project is under the MIT License.
+; 2019, K1DV5 (Kidus Adugna, kidusadugna@gmail.com, github.com/K1DV5)
+
+#SingleInstance force ; prevent multiple instances
+#Hotstring * C ? ; all hotstrings case sensitive
 SendMode Input ; use SendInput by default
 
 ; the following are for numbers
@@ -38,7 +49,7 @@ geezNum(n) {
     }
     ret := ""
     Loop % numlen/2 {
-        c := SubStr(n, 1 - 2*A_index, 2) ; the last two digits
+        c := SubStr(n, 1 - 2*A_index, 2) ; take two at a time from the end
         ret := num00 . nums10[SubStr(c, 1, 1)] . nums1[SubStr(c, 0)] . ret
     }
     ; clip the 00 and the first if it is 1
@@ -79,9 +90,6 @@ writeNum(n) {
 ::;::{U+1364}
 -::Send {U+1366}
 ?::Send {U+1367}
-
-#SingleInstance force ; prevent multiple instances
-#Hotstring * C ? ; all hotstrings case sensitive
 
 h::
 if GetKeyState("Capslock", "T")=1
