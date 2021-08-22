@@ -49,8 +49,8 @@ geezNum(n) {
     }
     ret := ""
     Loop % numlen/2 {
-        c := SubStr(n, 1 - 2*A_index, 2) ; take two at a time from the end
-        ret := num00 . nums10[SubStr(c, 1, 1)] . nums1[SubStr(c, 0)] . ret
+        current2 := SubStr(n, 1 - 2*A_index, 2) ; take two at a time from the end
+        ret := num00 . nums10[SubStr(current2, 1, 1)] . nums1[SubStr(current2, 0)] . ret
     }
     ; clip the 00 and the first if it is 1
     startPos := SubStr(ret, 2, 1) = nums1[1] and StrLen(ret) > 2 ? 3 : 2
