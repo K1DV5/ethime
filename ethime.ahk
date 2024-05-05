@@ -1,8 +1,23 @@
+; $ /mnt/c/Program\ Files/AutoHotkey/Compiler/Ahk2Exe.exe /in %n
 ; $ /mnt/c/Program\ Files/AutoHotkey/v2/AutoHotkey.exe %n
+
+;@Ahk2Exe-AddResource icon/enabled.ico,  160 ; Replaces 'H on blue'
+;@Ahk2Exe-AddResource icon/disabled.ico, 206 ; Replaces 'S on green'
+;@Ahk2Exe-AddResource icon/enabled.ico,  207 ; Replaces 'H on red'
+;@Ahk2Exe-AddResource icon/disabled.ico, 208 ; Replaces 'S on red'
+;@Ahk2Exe-SetMainIcon icon/enabled.ico
+;@Ahk2Exe-SetCompanyName K1DV5
+;@Ahk2Exe-SetCopyright © 2024
+;@Ahk2Exe-SetDescription An Ethiopic IME using a similar method as PowerGeez
+;@Ahk2Exe-SetFileVersion 1.0.0
+;@Ahk2Exe-SetName Ethime
+;@Ahk2Exe-SetProductName Ethime
+;@Ahk2Exe-SetProductVersion 2.0.0
+;@Ahk2Exe-SetVersion 2.0.0
 
 #SingleInstance force ; prevent multiple instances
 #Hotstring * C ? ; all hotstrings case sensitive
-InstallKeybdHook ; for A_Priorkey below
+InstallKeybdHook ; for A_Priorkey access below
 
 ; letters -----------------------------
 
@@ -240,17 +255,45 @@ setupNumbers()
 -::Send "{U+1366}"
 ?::Send "{U+1367}"
 
-#SuspendExempt
-::/\::{
-    if A_IsSuspended {
+; customize tray menu controls --------------
+
+trayMenuName := "&Ethiopic"
+
+toggle(to) {
+    global trayMenuName
+    if to = -1 {
+        to := A_IsSuspended
+    }
+    if to {
         Suspend false
+        A_TrayMenu.Check(trayMenuName)
         ToolTip("Ethiopic keyboard")
+        TraySetIcon("icon/enabled.ico", , true)
     } else {
         Suspend true
+        A_TrayMenu.Uncheck(trayMenuName)
         ToolTip("Latin keyboard")
+        TraySetIcon("icon/disabled.ico", , true)
     }
     Sleep(2000)
     ToolTip("")
+}
+
+trayToggleCallback(ItemName, ItemPos, MyMenu) {
+    toggle(-1)
+}
+
+A_TrayMenu.Delete("&Pause Script")
+A_TrayMenu.Rename("&Suspend Hotkeys", trayMenuName)
+A_TrayMenu.Add(trayMenuName, trayToggleCallback)
+A_TrayMenu.Default := trayMenuName
+A_TrayMenu.ClickCount := 1
+
+toggle(true)
+
+#SuspendExempt
+::/\::{
+    toggle(-1)
 }
 #SuspendExempt false
 
