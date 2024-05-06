@@ -285,24 +285,24 @@ trayToggleCallback(ItemName, ItemPos, MyMenu) {
 
 help(ItemName, ItemPos, MyMenu) {
     MyGui := Gui("", "Ethime help")
-    MyGui.Add("Text", "", "You can test here:")
-    MyGui.Add("Edit", "w600")
-    MyGui.Add("Text", "Section", "Consonants:")
+    MyGui.AddText("", "You can test here:")
+    MyGui.AddEdit("w650")
+    MyGui.AddText("Section", "Consonants`n(Caps lock OFF)")
     FC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Keyboard"])
     for char, letter in firstChars {
         FC.Add(, letter, char)
     }
-    MyGui.Add("Text", "ys", "Consonants with caps lock:")
+    MyGui.AddText("ys", "Consonants`n(Caps lock ON)")
     CC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Keyboard"])
     for char, letter in capsChars {
         CC.Add(, letter, char)
     }
-    MyGui.Add("Text", "ys", "Vowels:")
-    VC := MyGui.AddListView("r20 w150 Sort", ["Variant", "Keyboard"])
+    MyGui.AddText("ys", "Vowels`n(Same always)")
+    VC := MyGui.AddListView("r20 w200 Sort", ["Variant", "Example", "Keyboard"])
     for char, toAdd in vowels {
-        VC.Add(, toAdd + 1, char)
+        VC.Add(, toAdd + 1, Chr(Ord(firstChars["h"]) + toAdd), char)
     }
-    MyGui.Add("Text", "ys", "Other letters (caps on):")
+    MyGui.AddText("ys", "Other letters`n(Caps lock ON)")
     AC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Combination"])
     for chars, letter in afterChars {
         AC.Add(, letter, chars)
