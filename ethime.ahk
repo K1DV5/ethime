@@ -30,6 +30,7 @@ firstChars := Map(
     "r", "ረ",
     "s", "ሰ",
     "q", "ቀ",
+    "Q", "ቐ",
     "b", "በ",
     "t", "ተ",
     "c", "ቸ",
@@ -76,6 +77,7 @@ afterChars := Map(
     "NWA", "ኗ",
     "nWA", "ኟ",
     "KWA", "ኳ",
+    "KWY", "ኴ",
     "ZWA", "ዟ",
     "zWA", "ዧ",
     "DWA", "ዷ",
@@ -252,8 +254,8 @@ setupNumbers()
 ::`:`:::{U+1362}
 ,::Send "{U+1363}"
 ::;::{U+1364}
--::Send "{U+1366}"
-?::Send "{U+1367}"
+; -::Send "{U+1366}"
+; ?::Send "{U+1367}"
 
 ; customize tray menu controls --------------
 
