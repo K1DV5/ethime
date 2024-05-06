@@ -268,12 +268,10 @@ toggle(to) {
         Suspend false
         A_TrayMenu.Check(trayMenuName)
         ToolTip("Ethiopic keyboard")
-        TraySetIcon("icon/enabled.ico", , true)
     } else {
         Suspend true
         A_TrayMenu.Uncheck(trayMenuName)
-        ToolTip("Latin keyboard")
-        TraySetIcon("icon/disabled.ico", , true)
+        ToolTip("Normal keyboard")
     }
     Sleep(2000)
     ToolTip("")
