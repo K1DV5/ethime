@@ -283,9 +283,39 @@ trayToggleCallback(ItemName, ItemPos, MyMenu) {
     toggle(-1)
 }
 
+help(ItemName, ItemPos, MyMenu) {
+    MyGui := Gui("", "Ethime help")
+    MyGui.Add("Text", "", "You can test here:")
+    MyGui.Add("Edit", "w600")
+    MyGui.Add("Text", "Section", "Consonants:")
+    FC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Keyboard"])
+    for char, letter in firstChars {
+        FC.Add(, letter, char)
+    }
+    MyGui.Add("Text", "ys", "Consonants with caps lock:")
+    CC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Keyboard"])
+    for char, letter in capsChars {
+        CC.Add(, letter, char)
+    }
+    MyGui.Add("Text", "ys", "Vowels:")
+    VC := MyGui.AddListView("r20 w150 Sort", ["Variant", "Keyboard"])
+    for char, toAdd in vowels {
+        VC.Add(, toAdd + 1, char)
+    }
+    MyGui.Add("Text", "ys", "Other letters (caps on):")
+    AC := MyGui.AddListView("r20 w150 Sort", ["Letter", "Combination"])
+    for chars, letter in afterChars {
+        AC.Add(, letter, chars)
+    }
+    MyGui.Show
+}
+
+; help("", "", "")
+
 A_TrayMenu.Delete("&Pause Script")
 A_TrayMenu.Rename("&Suspend Hotkeys", trayMenuName)
 A_TrayMenu.Add(trayMenuName, trayToggleCallback)
+A_TrayMenu.Insert("E&xit", "&Help", help)
 A_TrayMenu.Default := trayMenuName
 A_TrayMenu.ClickCount := 1
 
